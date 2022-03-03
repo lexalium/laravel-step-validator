@@ -25,6 +25,31 @@ section as follows:
 $app->register(Lexal\LaravelStepValidator\ServiceProvider\ServiceProvider::class);
 ```
 
+## Usage
+
+Implement `ValidatableStepInterface` for the step and the listener will
+validate step data before handling the step. The validator will pass
+`RulesDefinition` entity data directly to the Laravel validator factory
+method.
+
+```php
+use Lexal\LaravelStepValidator\Entity\RulesDefinition;
+use Lexal\LaravelStepValidator\Steps\ValidatableStepInterface;
+use Lexal\SteppedForm\Steps\RenderStepInterface;
+
+class CustomerStep implements RenderStepInterface, ValidatableStepInterface
+{
+    public function getRulesDefinition(mixed $entity): RulesDefinition
+    {
+        return new RulesDefinition(
+            /* rules */,
+            /* messages (default - empty array) */,
+            /* custom attributes (default - empty array) */,
+        );
+    }
+}
+```
+
 ---
 
 ## License
