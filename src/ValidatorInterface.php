@@ -2,10 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Lexal\LaravelStepValidator\Validator;
+namespace Lexal\LaravelStepValidator;
 
-use Lexal\LaravelStepValidator\Entity\RulesDefinition;
-use Lexal\LaravelStepValidator\Validator\Exception\ValidatorException;
+use Lexal\LaravelStepValidator\Exception\ValidatorException;
 
 interface ValidatorInterface
 {

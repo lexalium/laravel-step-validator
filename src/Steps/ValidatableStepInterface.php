@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Lexal\LaravelStepValidator\Steps;
 
-use Lexal\LaravelStepValidator\Entity\RulesDefinition;
+use Lexal\LaravelStepValidator\RulesDefinition;
 
 interface ValidatableStepInterface
 {

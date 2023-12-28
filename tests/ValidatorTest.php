@@ -2,29 +2,35 @@
 
 declare(strict_types=1);
 
-namespace Lexal\LaravelStepValidator\Tests\Validator;
+namespace Lexal\LaravelStepValidator\Tests;
 
 use Illuminate\Contracts\Validation\Factory as ValidationFactory;
 use Illuminate\Contracts\Validation\Validator as LaravelValidator;
 use Illuminate\Support\MessageBag;
-use Lexal\LaravelStepValidator\Entity\RulesDefinition;
-use Lexal\LaravelStepValidator\Validator\Exception\ValidatorException;
-use Lexal\LaravelStepValidator\Validator\Validator;
-use Lexal\LaravelStepValidator\Validator\ValidatorInterface;
+use Lexal\LaravelStepValidator\Exception\ValidatorException;
+use Lexal\LaravelStepValidator\RulesDefinition;
+use Lexal\LaravelStepValidator\Validator;
+use Lexal\LaravelStepValidator\ValidatorInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
-class ValidatorTest extends TestCase
+final class ValidatorTest extends TestCase
 {
     private MockObject $validatorFactory;
     private ValidatorInterface $validator;
 
+    protected function setUp(): void
+    {
+        $this->validatorFactory = $this->createMock(ValidationFactory::class);
+
+        $this->validator = new Validator($this->validatorFactory);
+    }
+
     public function testValidate(): void
     {
-        $validator = $this->createMock(LaravelValidator::class);
+        $validator = $this->createStub(LaravelValidator::class);
 
-        $validator->expects($this->once())
-            ->method('fails')
+        $validator->method('fails')
             ->willReturn(false);
 
         $this->validatorFactory->expects($this->once())
@@ -40,14 +46,12 @@ class ValidatorTest extends TestCase
         /** @phpstan-ignore-next-line */
         $this->expectExceptionObject(new ValidatorException(['data' => ['required message']]));
 
-        $validator = $this->createMock(LaravelValidator::class);
+        $validator = $this->createStub(LaravelValidator::class);
 
-        $validator->expects($this->once())
-            ->method('fails')
+        $validator->method('fails')
             ->willReturn(true);
 
-        $validator->expects($this->once())
-            ->method('errors')
+        $validator->method('errors')
             ->willReturn(new MessageBag(['data' => 'required message']));
 
         $this->validatorFactory->expects($this->once())
@@ -59,14 +63,5 @@ class ValidatorTest extends TestCase
             ['data' => 'test'],
             new RulesDefinition(['data' => 'required'], ['data' => 'test message']),
         );
-    }
-
-    protected function setUp(): void
-    {
-        $this->validatorFactory = $this->createMock(ValidationFactory::class);
-
-        $this->validator = new Validator($this->validatorFactory);
-
-        parent::setUp();
     }
 }
