@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace Lexal\LaravelStepValidator\EventListener;
 
+use Lexal\LaravelStepValidator\Exception\ValidatorException;
 use Lexal\LaravelStepValidator\Steps\ValidatableStepInterface;
-use Lexal\LaravelStepValidator\Validator\Exception\ValidatorException;
-use Lexal\LaravelStepValidator\Validator\ValidatorInterface;
+use Lexal\LaravelStepValidator\ValidatorInterface;
 use Lexal\SteppedForm\EventDispatcher\Event\BeforeHandleStep;
 
 use function is_array;
 
-class BeforeHandleStepListener
+final class BeforeHandleStepListener
 {
-    public function __construct(private ValidatorInterface $validator)
+    public function __construct(private readonly ValidatorInterface $validator)
     {
     }
 
@@ -22,10 +22,10 @@ class BeforeHandleStepListener
      */
     public function handle(BeforeHandleStep $event): void
     {
-        $step = $event->getStep()->getStep();
+        $step = $event->step->step;
 
         if ($step instanceof ValidatableStepInterface && is_array($event->getData())) {
-            $this->validator->validate($event->getData(), $step->getRulesDefinition($event->getEntity()));
+            $this->validator->validate($event->getData(), $step->getRulesDefinition($event->entity));
         }
     }
 }
