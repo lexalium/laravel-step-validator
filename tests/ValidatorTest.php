@@ -33,7 +33,7 @@ final class ValidatorTest extends TestCase
         $validator->method('fails')
             ->willReturn(false);
 
-        $this->validatorFactory->expects($this->once())
+        $this->validatorFactory->expects(self::once())
             ->method('make')
             ->with(['data' => 'test'], ['data' => 'required'], [], [])
             ->willReturn($validator);
@@ -54,7 +54,7 @@ final class ValidatorTest extends TestCase
         $validator->method('errors')
             ->willReturn(new MessageBag(['data' => 'required message']));
 
-        $this->validatorFactory->expects($this->once())
+        $this->validatorFactory->expects(self::once())
             ->method('make')
             ->with(['data' => 'test'], ['data' => 'required'], ['data' => 'test message'], [])
             ->willReturn($validator);

@@ -7,9 +7,9 @@ namespace Lexal\LaravelStepValidator;
 use Illuminate\Contracts\Validation\Factory as ValidationFactory;
 use Lexal\LaravelStepValidator\Exception\ValidatorException;
 
-final class Validator implements ValidatorInterface
+final readonly class Validator implements ValidatorInterface
 {
-    public function __construct(private readonly ValidationFactory $validatorFactory)
+    public function __construct(private ValidationFactory $validatorFactory)
     {
     }
 
@@ -23,6 +23,7 @@ final class Validator implements ValidatorInterface
         );
 
         if ($validator->fails()) {
+            /** @phpstan-ignore-next-line */
             throw new ValidatorException($validator->errors()->messages());
         }
     }

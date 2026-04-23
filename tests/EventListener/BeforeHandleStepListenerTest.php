@@ -14,6 +14,7 @@ use Lexal\SteppedForm\Step\StepInterface;
 use Lexal\SteppedForm\Step\StepKey;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use stdClass;
 
 final class BeforeHandleStepListenerTest extends TestCase
 {
@@ -29,7 +30,7 @@ final class BeforeHandleStepListenerTest extends TestCase
 
     public function testHandle(): void
     {
-        $this->validator->expects($this->once())
+        $this->validator->expects(self::once())
             ->method('validate')
             ->with(['data' => 'test'], new RulesDefinition(['data' => 'required'], ['data' => 'test message']));
 
@@ -38,7 +39,7 @@ final class BeforeHandleStepListenerTest extends TestCase
         $step->method('getRulesDefinition')
             ->willReturn(new RulesDefinition(['data' => 'required'], ['data' => 'test message']));
 
-        $event = new BeforeHandleStep(['data' => 'test'], ['entity'], new Step(new StepKey('key'), $step));
+        $event = new BeforeHandleStep(['data' => 'test'], new stdClass(), new Step(new StepKey('key'), $step));
 
         $this->listener->handle($event);
     }
@@ -47,7 +48,7 @@ final class BeforeHandleStepListenerTest extends TestCase
     {
         $this->expectExceptionObject(new ValidatorException(['data' => 'required message']));
 
-        $this->validator->expects($this->once())
+        $this->validator->expects(self::once())
             ->method('validate')
             ->with(['data' => 'test'], new RulesDefinition(['data' => 'required']))
             ->willThrowException(new ValidatorException(['data' => 'required message']));
@@ -57,31 +58,31 @@ final class BeforeHandleStepListenerTest extends TestCase
         $step->method('getRulesDefinition')
             ->willReturn(new RulesDefinition(['data' => 'required']));
 
-        $event = new BeforeHandleStep(['data' => 'test'], ['entity'], new Step(new StepKey('key'), $step));
+        $event = new BeforeHandleStep(['data' => 'test'], new stdClass(), new Step(new StepKey('key'), $step));
 
         $this->listener->handle($event);
     }
 
     public function testHandleDataIsNorArray(): void
     {
-        $this->validator->expects($this->never())
+        $this->validator->expects(self::never())
             ->method('validate');
 
         $step = $this->createStub(ValidatableStepInterface::class);
 
-        $event = new BeforeHandleStep('data', ['entity'], new Step(new StepKey('key'), $step));
+        $event = new BeforeHandleStep('data', new stdClass(), new Step(new StepKey('key'), $step));
 
         $this->listener->handle($event);
     }
 
     public function testHandleStepIsNotValidatable(): void
     {
-        $this->validator->expects($this->never())
+        $this->validator->expects(self::never())
             ->method('validate');
 
         $step = $this->createStub(StepInterface::class);
 
-        $event = new BeforeHandleStep(['data' => 'test'], ['entity'], new Step(new StepKey('key'), $step));
+        $event = new BeforeHandleStep(['data' => 'test'], new stdClass(), new Step(new StepKey('key'), $step));
 
         $this->listener->handle($event);
     }
