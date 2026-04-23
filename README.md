@@ -1,14 +1,14 @@
-# Step Validator for Laravel & Lumen
+# Step Validator for Laravel
 
 [![PHPUnit, PHPCS, PHPStan Tests](https://github.com/lexalium/laravel-step-validator/actions/workflows/tests.yml/badge.svg)](https://github.com/lexalium/laravel-step-validator/actions/workflows/tests.yml)
 
-The package is built for validating step data on the `BeforeHandleStep` event of [Stepped Form](https://github.com/lexalium/stepped-form).
+This package validates step data on the `BeforeHandleStep` event from [Stepped Form](https://github.com/lexalium/stepped-form).
 
 ## Requirements
 
-**PHP:** >=8.1
+**PHP:** >=8.2
 
-**Laravel:** ^9.0 || ^10.0
+**Laravel:** ^11.0 || ^12.0
 
 ## Installation
 
@@ -18,19 +18,10 @@ Via Composer
 composer require lexal/laravel-step-validator
 ```
 
-### Additional changes for Lumen framework
-
-Add the following snippet to the `bootstrap/app.php` file under the providers
-section as follows:
-
-```php
-$app->register(Lexal\LaravelStepValidator\ServiceProvider\ServiceProvider::class);
-```
-
 ## Usage
 
-Implement `ValidatableStepInterface` for the step and the listener will validate step data before handling the step.
-The validator will pass `RulesDefinition` data directly to the Laravel validator factory method.
+Implement `ValidatableStepInterface` on your step and the the listener will validate step data before the step is handled.
+The validator passes `RulesDefinition` data directly to Laravel's validator factory method.
 
 ```php
 use Lexal\LaravelStepValidator\RulesDefinition;
@@ -54,4 +45,4 @@ final class CustomerStep implements RenderStepInterface, ValidatableStepInterfac
 
 ## License
 
-Laravel & Lumen Step Validator is licensed under the MIT License. See [LICENSE](LICENSE) for the full license text.
+Laravel Step Validator is licensed under the MIT License. See [LICENSE](LICENSE) for the full license text.

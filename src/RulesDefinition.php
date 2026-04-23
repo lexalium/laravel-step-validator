@@ -4,21 +4,21 @@ declare(strict_types=1);
 
 namespace Lexal\LaravelStepValidator;
 
-final class RulesDefinition
+final readonly class RulesDefinition
 {
     public function __construct(
         /**
          * @var array<string, mixed>
          */
-        public readonly array $rules,
+        public array $rules,
         /**
          * @var array<string, string>
          */
-        public readonly array $messages = [],
+        public array $messages = [],
         /**
          * @var array<string, string>
          */
-        public readonly array $customAttributes = [],
+        public array $customAttributes = [],
     ) {
     }
 }

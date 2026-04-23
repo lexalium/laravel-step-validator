@@ -11,9 +11,9 @@ use Lexal\SteppedForm\EventDispatcher\Event\BeforeHandleStep;
 
 use function is_array;
 
-final class BeforeHandleStepListener
+final readonly class BeforeHandleStepListener
 {
-    public function __construct(private readonly ValidatorInterface $validator)
+    public function __construct(private ValidatorInterface $validator)
     {
     }
 
